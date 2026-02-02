@@ -1,3 +1,4 @@
+"use client";
 import React, { useState, useMemo } from 'react';
 
 // Louisville Cardinals - COMPLETE Synergy Data (86 files, 10 players, 10 play types)
@@ -361,6 +362,15 @@ export default function App() {
   const [segFilter, setSegFilter] = useState("all");
   const [clutchNote, setClutchNote] = useState(true);
   const [clutchFilter, setClutchFilter] = useState("all");
+  // Compare
+  const [comparePlayers, setComparePlayers] = useState(["Ryan Conwell", "Isaac McKneely"]);
+  // Game Prep
+  const [prepOpponent, setPrepOpponent] = useState("Kentucky");
+  // Quiz
+  const [quizRevealed, setQuizRevealed] = useState({});
+  // Share
+  const [sharePlayer, setSharePlayer] = useState("Ryan Conwell");
+  const [shareType, setShareType] = useState("overview");
 
   const player = players[selectedPlayer];
 
@@ -493,7 +503,7 @@ export default function App() {
   const playFrequency = Object.entries(teamStats).sort((a, b) => b[1].poss - a[1].poss);
 
   return (
-    <div className="p-3 bg-slate-900 min-h-screen text-white text-sm">
+    <div className="p-3 bg-slate-900 min-h-screen text-white text-sm" style={{maxWidth:'1200px', margin:'0 auto'}}>
       <h1 className="text-xl font-bold text-center text-red-500">Louisville Cardinals</h1>
       <div className="flex justify-center items-center gap-2">
         <p className="text-center text-gray-400 text-xs">Advanced Synergy Analysis • 2025-26</p>
@@ -511,12 +521,13 @@ export default function App() {
               <span className="font-semibold text-white">Tabs:</span>
             </div>
             <div className="pl-2 space-y-1.5">
-              <div><span className="text-red-400 font-semibold">DNA</span> — Team overview. Every player's efficiency, volume, and role tier at a glance. Start here.</div>
-              <div><span className="text-blue-400 font-semibold">Player Intel</span> — Deeper dives. <em>Risk Index</em> shows each player's turnover and inefficiency exposure. <em>Clutch Splits</em> breaks down shot selection and FG% in close games vs blowouts.</div>
-              <div><span className="text-blue-400 font-semibold">Scenarios</span> — What-if analysis. <em>Dependency</em> shows how the team's PPP changes without each player. <em>Simulator</em> lets you remove a play type and see where those possessions redistribute.</div>
-              <div><span className="text-blue-400 font-semibold">Playbook</span> — Scheme insights. <em>Play Types</em> ranks every action (spot up, P&R, cut, etc.) with the best player for each. <em>Breakdown</em> shows the win/loss formula and how each player fails.</div>
-              <div><span className="text-blue-400 font-semibold">Scoring Runs</span> — Game flow. 5-minute scoring segments showing margin swings, run patterns, and momentum shifts across all games.</div>
-              <div><span className="text-blue-400 font-semibold">Profiles</span> — Individual deep dives. Radar charts, shot diet, tendencies, and every play type for a single player. Use the dropdown to switch players.</div>
+              <div><span className="text-red-400 font-semibold">DNA</span> — Team overview. Radar chart, play type efficiency table, strengths and weaknesses at a glance. Start here.</div>
+              <div><span className="text-blue-400 font-semibold">Player Intel</span> — Four sub-views. <em>Risk Index</em> shows turnover and inefficiency exposure. <em>Clutch Splits</em> breaks down shot selection in close games vs blowouts with T-Rank filtering. <em>Compare</em> lets you pick 2-3 players for side-by-side radar charts, stats, and play type bars. <em>Share Cards</em> generates screenshot-ready stat cards.</div>
+              <div><span className="text-blue-400 font-semibold">Scenarios</span> — What-if analysis. <em>Dependency</em> shows how the team's PPP changes without each player. <em>Simulator</em> lets you remove a play type and see where possessions redistribute.</div>
+              <div><span className="text-blue-400 font-semibold">Playbook</span> — Scheme insights. <em>Play Types</em> ranks every action with the best player for each. <em>Breakdown</em> shows the win/loss formula and how each player fails.</div>
+              <div><span className="text-blue-400 font-semibold">Scoring Runs</span> — Game flow. 5-minute scoring segments showing margin swings, run patterns, and momentum shifts with T-Rank quality filtering.</div>
+              <div><span className="text-blue-400 font-semibold">Game Prep</span> — Opponent scouting. Select an opponent to see T-Rank profile, previous matchup results, and Louisville's record vs similar quality teams. Defensive synergy data coming soon.</div>
+              <div><span className="text-blue-400 font-semibold">Profiles</span> — Individual deep dives. Radar charts, shot diet, and every play type for a single player.</div>
             </div>
             <div className="border-t border-slate-700 pt-2">
               <span className="font-semibold text-white">Possession counts <span className="text-gray-500">(Xp)</span>:</span> Shown throughout as sample size context. Higher = more reliable. Below 15p treat with caution.
@@ -535,6 +546,7 @@ export default function App() {
           {k:"scenarios",l:"Scenarios"},
           {k:"playbook",l:"Playbook"},
           {k:"segments",l:"Scoring Runs"},
+          {k:"prep",l:"Game Prep"},
           {k:"profile",l:"Profiles"}
         ].map(v => (
           <button key={v.k} onClick={() => setView(v.k)} className={`px-2 py-1 rounded text-xs ${view === v.k ? "bg-red-600" : "bg-gray-700"}`}>{v.l}</button>
@@ -544,37 +556,37 @@ export default function App() {
       {/* DNA TAB */}
       {view === "dna" && (
         <div>
-          <div className="bg-slate-800 rounded-lg p-3 mb-3">
-            <h2 className="font-bold text-yellow-400 mb-2 text-center">Team Offensive Profile</h2>
-            <div className="flex justify-center">
-              <RadarChart data={offensiveRadar} title="Efficiency Percentile" color="#f97316" size={220} />
+          <style>{`@media(min-width:1024px){.dna-top{flex-direction:row}.dna-radar{width:33%;min-width:320px}.dna-table{flex:1}}`}</style>
+          <div className="dna-top flex flex-col gap-3 mb-3">
+            <div className="dna-radar bg-slate-800 rounded-lg p-3 flex flex-col items-center justify-center">
+              <h2 className="font-bold text-yellow-400 mb-2 text-center">Team Offensive Profile</h2>
+              <RadarChart data={offensiveRadar} title="Efficiency Percentile" color="#f97316" size={280} />
             </div>
-          </div>
-
-          <div className="bg-slate-800 rounded-lg p-3 mb-3">
-            <h2 className="font-bold text-yellow-400 mb-2">Play Type Efficiency</h2>
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="text-gray-400 border-b border-slate-600">
-                  <th className="text-left p-1">Play Type</th>
-                  <th className="p-1">Poss</th>
-                  <th className="p-1">Pts</th>
-                  <th className="p-1">PPP</th>
-                  <th className="p-1">Grade</th>
-                </tr>
-              </thead>
-              <tbody>
-                {playFrequency.map(([pt, data]) => (
-                  <tr key={pt} className="border-b border-slate-700">
-                    <td className="p-1 font-medium">{pt}</td>
-                    <td className="p-1 text-center text-cyan-400">{data.poss}</td>
-                    <td className="p-1 text-center">{data.pts}</td>
-                    <td className={`p-1 text-center font-bold ${getPPPColor(data.ppp)}`}>{data.ppp.toFixed(2)}</td>
-                    <td className="p-1 text-center"><PPPBadge ppp={data.ppp} /></td>
+            <div className="dna-table bg-slate-800 rounded-lg p-3">
+              <h2 className="font-bold text-yellow-400 mb-2">Play Type Efficiency</h2>
+              <table className="w-full text-xs">
+                <thead>
+                  <tr className="text-gray-400 border-b border-slate-600">
+                    <th className="text-left p-1">Play Type</th>
+                    <th className="p-1">Poss</th>
+                    <th className="p-1">Pts</th>
+                    <th className="p-1">PPP</th>
+                    <th className="p-1">Grade</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {playFrequency.map(([pt, data]) => (
+                    <tr key={pt} className="border-b border-slate-700">
+                      <td className="p-1 font-medium">{pt}</td>
+                      <td className="p-1 text-center text-cyan-400">{data.poss}</td>
+                      <td className="p-1 text-center">{data.pts}</td>
+                      <td className={`p-1 text-center font-bold ${getPPPColor(data.ppp)}`}>{data.ppp.toFixed(2)}</td>
+                      <td className="p-1 text-center"><PPPBadge ppp={data.ppp} /></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
@@ -603,8 +615,8 @@ export default function App() {
       {/* PLAYER INTEL TAB (Tendencies + Risk Index) */}
       {view === "intel" && (
         <div>
-          <div className="flex gap-1 mb-3 justify-center">
-            {[{k:"risk",l:"Risk Index"},{k:"clutch",l:"Clutch Splits"}].map(s => (
+          <div className="flex gap-1 mb-3 justify-center flex-wrap">
+            {[{k:"risk",l:"Risk Index"},{k:"clutch",l:"Clutch Splits"},{k:"compare",l:"Compare"},{k:"share",l:"Share Cards"}].map(s => (
               <button key={s.k} onClick={() => setIntelSection(s.k)} className={`px-2 py-1 rounded text-xs ${intelSection === s.k ? "bg-blue-600" : "bg-slate-700"}`}>{s.l}</button>
             ))}
           </div>
@@ -862,6 +874,220 @@ export default function App() {
             </>
             );
           })()}
+
+          {intelSection === "compare" && (
+            <>
+          <div>
+          <div className="bg-slate-800 rounded-lg p-3 mb-3">
+            <h2 className="font-bold text-yellow-400 mb-2">🔄 Player Comparison</h2>
+            <p className="text-gray-400 text-xs mb-3">Select 2-3 players to compare side by side</p>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {playerNames.map(name => {
+                const sel = comparePlayers.includes(name);
+                return (
+                  <button key={name} onClick={() => {
+                    if (sel) { if (comparePlayers.length > 2) setComparePlayers(comparePlayers.filter(n => n !== name)); }
+                    else if (comparePlayers.length < 3) setComparePlayers([...comparePlayers, name]);
+                  }} className={`px-2 py-1 rounded text-xs transition-all ${sel ? "bg-red-600 ring-1 ring-red-400" : "bg-slate-700 opacity-60 hover:opacity-100"}`}>
+                    {getDisplayName(name)}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="bg-slate-800 rounded-lg p-3 mb-3">
+            <h3 className="font-semibold text-sm mb-3">Efficiency Profiles</h3>
+            <div className="flex flex-wrap justify-center gap-4">
+              {comparePlayers.map(name => {
+                const p = players[name];
+                const radar = playTypes.map(pt => ({
+                  label: pt.replace("P&R Ball Handler","P&R").replace("P&R Roll Man","Roll Man").replace("Off Rebound","Putback"),
+                  value: p.plays[pt] ? normalize(p.plays[pt].ppp) : 0
+                }));
+                const colors = ["#f97316","#3b82f6","#10b981"];
+                const ci = comparePlayers.indexOf(name);
+                return (
+                  <div key={name} className="text-center">
+                    <div className="text-xs font-bold mb-1" style={{color:colors[ci]}}>{getDisplayName(name)}</div>
+                    <RadarChart data={radar} title="" color={colors[ci]} size={160} />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="bg-slate-800 rounded-lg p-3 mb-3">
+            <h3 className="font-semibold text-sm mb-2">Head to Head</h3>
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="text-gray-400 border-b border-slate-600">
+                  <th className="text-left p-1">Stat</th>
+                  {comparePlayers.map(n => <th key={n} className="p-1 text-center">{getDisplayName(n)}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { label: "Total Poss", fn: n => Object.values(players[n].plays).reduce((a,p)=>a+p.poss,0) },
+                  { label: "Total Pts", fn: n => Object.values(players[n].plays).reduce((a,p)=>a+p.pts,0) },
+                  { label: "Overall PPP", fn: n => (Object.values(players[n].plays).reduce((a,p)=>a+p.pts,0)/Object.values(players[n].plays).reduce((a,p)=>a+p.poss,0)).toFixed(3), isBest: "high" },
+                  { label: "TO%", fn: n => { const t=playerTendencies.find(p=>p.name===n); return t ? t.toPct.toFixed(1)+"%" : "—"; }, isBest: "low" },
+                  { label: "Variance", fn: n => { const t=playerTendencies.find(p=>p.name===n); return t ? t.variance.toFixed(2) : "—"; }, isBest: "low" },
+                  { label: "Top Play", fn: n => { const best = Object.entries(players[n].plays).filter(([_,d])=>d.poss>=10).sort((a,b)=>b[1].ppp-a[1].ppp)[0]; return best ? `${best[0]} (${best[1].ppp.toFixed(2)})` : "—"; }},
+                  { label: "Spot Up PPP", fn: n => players[n].plays["Spot Up"] ? players[n].plays["Spot Up"].ppp.toFixed(2) : "—", isBest: "high" },
+                  { label: "3PT%", fn: n => { const su = players[n].plays["Spot Up"]; return su?.threePct != null ? su.threePct.toFixed(1)+"%" : "—"; }, isBest: "high" },
+                  { label: "Games", fn: n => players[n].games },
+                ].map(row => {
+                  const vals = comparePlayers.map(n => row.fn(n));
+                  const numVals = vals.map(v => parseFloat(String(v).replace("%","")));
+                  const bestIdx = row.isBest === "high" ? numVals.indexOf(Math.max(...numVals.filter(v=>!isNaN(v)))) :
+                                  row.isBest === "low" ? numVals.indexOf(Math.min(...numVals.filter(v=>!isNaN(v)))) : -1;
+                  return (
+                    <tr key={row.label} className="border-b border-slate-700">
+                      <td className="p-1.5 text-gray-400">{row.label}</td>
+                      {vals.map((v, i) => (
+                        <td key={i} className={`p-1.5 text-center ${i === bestIdx ? "text-emerald-400 font-bold" : "text-white"}`}>{v}</td>
+                      ))}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+
+          <div className="bg-slate-800 rounded-lg p-3">
+            <h3 className="font-semibold text-sm mb-2">Play Type Breakdown</h3>
+            {playTypes.filter(pt => comparePlayers.some(n => players[n].plays[pt]?.poss >= 10)).map(pt => (
+              <div key={pt} className="mb-3">
+                <div className="text-xs font-semibold text-gray-400 mb-1">{pt}</div>
+                {comparePlayers.map((name, ci) => {
+                  const d = players[name].plays[pt];
+                  if (!d) return <div key={name} className="text-xs text-gray-600 mb-1">{getDisplayName(name)}: N/A</div>;
+                  const maxPoss = Math.max(...comparePlayers.map(n => players[n].plays[pt]?.poss || 0));
+                  const colors = ["#f97316","#3b82f6","#10b981"];
+                  return (
+                    <div key={name} className="flex items-center gap-2 mb-1">
+                      <span className="text-xs w-16 truncate" style={{color:colors[ci]}}>{getDisplayName(name)}</span>
+                      <div className="flex-1 bg-slate-700 h-4 rounded overflow-hidden relative">
+                        <div className="h-4 rounded" style={{width:`${(d.poss/maxPoss)*100}%`, backgroundColor:colors[ci], opacity:0.7}}></div>
+                        <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold">{d.ppp.toFixed(2)} • {d.poss}p</span>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </div>
+          </div>
+            </>
+          )}
+
+          {intelSection === "share" && (
+            <>
+          <div>
+          <div className="bg-slate-800 rounded-lg p-3 mb-3">
+            <h2 className="font-bold text-yellow-400 mb-1">📤 Shareable Cards</h2>
+            <p className="text-gray-400 text-xs mb-3">Generate stat cards — screenshot to share</p>
+            <div className="flex gap-2 mb-2">
+              <select value={sharePlayer} onChange={e => setSharePlayer(e.target.value)} className="flex-1 p-1.5 bg-slate-700 border border-slate-600 rounded text-xs">
+                {playerNames.map(name => <option key={name} value={name}>{name}</option>)}
+              </select>
+              <select value={shareType} onChange={e => setShareType(e.target.value)} className="p-1.5 bg-slate-700 border border-slate-600 rounded text-xs">
+                <option value="overview">Overview</option>
+                <option value="playtype">Play Types</option>
+                <option value="splits">Clutch Splits</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="share-card" className="bg-gradient-to-br from-slate-900 via-slate-800 to-red-900/30 rounded-xl p-4 border border-slate-600 shadow-xl">
+            <div className="flex items-center justify-between mb-3">
+              <div>
+                <div className="text-xs text-red-400 font-bold tracking-wider">LOUISVILLE CARDINALS</div>
+                <div className="text-xl font-bold text-white">{sharePlayer}</div>
+                <div className="text-xs text-gray-400">{players[sharePlayer].position} • {playerRoles[sharePlayer].primary} • Tier {playerRoles[sharePlayer].tier}</div>
+              </div>
+              <div className="text-right">
+                <div className="text-2xl font-bold text-yellow-400">
+                  {(Object.values(players[sharePlayer].plays).reduce((a,p)=>a+p.pts,0) / Object.values(players[sharePlayer].plays).reduce((a,p)=>a+p.poss,0)).toFixed(2)}
+                </div>
+                <div className="text-[10px] text-gray-400">OVERALL PPP</div>
+              </div>
+            </div>
+
+            {shareType === "overview" && (
+              <div>
+                <div className="grid grid-cols-3 gap-2 text-center text-xs mb-3">
+                  <div className="bg-slate-700/50 rounded p-1.5">
+                    <div className="text-gray-500">Games</div>
+                    <div className="font-bold">{players[sharePlayer].games}</div>
+                  </div>
+                  <div className="bg-slate-700/50 rounded p-1.5">
+                    <div className="text-gray-500">Poss</div>
+                    <div className="font-bold text-cyan-400">{Object.values(players[sharePlayer].plays).reduce((a,p)=>a+p.poss,0)}</div>
+                  </div>
+                  <div className="bg-slate-700/50 rounded p-1.5">
+                    <div className="text-gray-500">Points</div>
+                    <div className="font-bold text-green-400">{Object.values(players[sharePlayer].plays).reduce((a,p)=>a+p.pts,0)}</div>
+                  </div>
+                </div>
+                <div className="text-xs text-gray-500">
+                  Top 3 plays: {Object.entries(players[sharePlayer].plays).sort((a,b)=>b[1].poss-a[1].poss).slice(0,3).map(([pt,d]) => `${pt} (${d.ppp.toFixed(2)})`).join(" • ")}
+                </div>
+              </div>
+            )}
+
+            {shareType === "playtype" && (
+              <div className="space-y-1">
+                {Object.entries(players[sharePlayer].plays).sort((a,b)=>b[1].poss-a[1].poss).slice(0,5).map(([pt, d]) => (
+                  <div key={pt} className="flex items-center gap-2 text-xs">
+                    <span className="w-24 text-gray-400 truncate">{pt}</span>
+                    <div className="flex-1 bg-slate-700/50 h-5 rounded overflow-hidden relative">
+                      <div className={`h-5 rounded ${d.ppp >= 1.2 ? "bg-emerald-600/70" : d.ppp >= 1.0 ? "bg-green-600/60" : d.ppp >= 0.8 ? "bg-yellow-600/60" : "bg-red-600/60"}`} style={{width:`${Math.min(100, d.ppp/1.8*100)}%`}}></div>
+                      <span className="absolute inset-0 flex items-center px-2 font-bold text-white">{d.ppp.toFixed(2)} PPP</span>
+                    </div>
+                    <span className="text-gray-500 w-8 text-right">{d.poss}p</span>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {shareType === "splits" && (() => {
+              const games = clutchDataPerGame[sharePlayer];
+              if (!games || games.length === 0) return <div className="text-xs text-gray-500">No clutch split data available for this player</div>;
+              let closeMade=0, closeAtt=0, blowMade=0, blowAtt=0;
+              games.forEach(g => {
+                ["three","mid","rim","ft"].forEach(st => {
+                  closeMade += g.close[st][0]; closeAtt += g.close[st][1];
+                  blowMade += g.blowout[st][0]; blowAtt += g.blowout[st][1];
+                });
+              });
+              return (
+                <div className="grid grid-cols-2 gap-3 text-center">
+                  <div className="bg-purple-900/30 rounded p-2">
+                    <div className="text-purple-400 text-xs font-bold mb-1">Close Games</div>
+                    <div className="text-xl font-bold text-white">{closeAtt > 0 ? (closeMade/closeAtt*100).toFixed(0) : 0}%</div>
+                    <div className="text-[10px] text-gray-500">{closeMade}/{closeAtt} shots</div>
+                  </div>
+                  <div className="bg-slate-700/30 rounded p-2">
+                    <div className="text-gray-400 text-xs font-bold mb-1">Blowouts</div>
+                    <div className="text-xl font-bold text-white">{blowAtt > 0 ? (blowMade/blowAtt*100).toFixed(0) : 0}%</div>
+                    <div className="text-[10px] text-gray-500">{blowMade}/{blowAtt} shots</div>
+                  </div>
+                </div>
+              );
+            })()}
+
+            <div className="mt-3 pt-2 border-t border-slate-700/50 flex justify-between items-center">
+              <span className="text-[9px] text-gray-600">Synergy Analysis • 2025-26</span>
+              <span className="text-[9px] text-gray-600">louisville-synergy</span>
+            </div>
+          </div>
+
+          <p className="text-center text-xs text-gray-500 mt-3">Screenshot this card to share on social media</p>
+          </div>
+            </>
+          )}
         </div>
       )}
 
@@ -1443,7 +1669,145 @@ export default function App() {
         </div>
         );
       })()}
+      {/* GAME PREP TAB */}
+      {view === "prep" && (
+        <div>
+          <div className="bg-slate-800 rounded-lg p-3 mb-3">
+            <h2 className="font-bold text-yellow-400 mb-2">🎯 Game Prep</h2>
+            <p className="text-gray-400 text-xs mb-3">Select opponent to see matchup analysis</p>
+            <div className="flex flex-wrap gap-2 mb-3">
+              {Object.keys(opponentRankings).map(opp => (
+                <button key={opp} onClick={() => setPrepOpponent(opp)}
+                  className={`px-2 py-1 rounded text-xs ${prepOpponent === opp ? "bg-red-600" : "bg-slate-700"}`}>
+                  {opp} <span className={`font-mono ${opponentRankings[opp].rank <= 50 ? "text-red-300" : "text-gray-500"}`}>#{opponentRankings[opp].rank}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
+          {(() => {
+            const opp = opponentRankings[prepOpponent];
+            if (!opp) return null;
+            const isT50 = opp.rank <= 50;
+
+            // Find Louisville's game vs this opponent if it exists
+            const gameData = segmentData.find(g => g.opponent === prepOpponent);
+            
+            // How Louisville performs vs similar quality opponents
+            const qualityBucket = isT50 
+              ? segmentData.filter(g => opponentRankings[g.opponent]?.rank <= 50)
+              : segmentData.filter(g => opponentRankings[g.opponent]?.rank > 50);
+            const bucketAvgMargin = qualityBucket.length > 0 ? qualityBucket.reduce((a,g) => a + g.lou_final - g.opp_final, 0) / qualityBucket.length : 0;
+            const bucketRecord = `${qualityBucket.filter(g=>g.result==="W").length}-${qualityBucket.filter(g=>g.result==="L").length}`;
+
+            return (
+              <div>
+                {/* Opponent Profile */}
+                <div className="bg-slate-800 rounded-lg p-3 mb-3">
+                  <div className="flex justify-between items-center mb-3">
+                    <div>
+                      <h3 className="font-bold text-lg">{prepOpponent}</h3>
+                      <span className={`text-xs ${isT50 ? "text-red-400" : "text-gray-400"}`}>T-Rank #{opp.rank} • {opp.rec}</span>
+                    </div>
+                    <div className={`px-3 py-1 rounded text-sm font-bold ${isT50 ? "bg-red-600" : "bg-slate-600"}`}>
+                      {isT50 ? "Top 50" : "Outside 50"}
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-4 gap-2 text-center text-xs">
+                    <div className="bg-slate-700 rounded p-2">
+                      <div className="text-gray-400">AdjOE</div>
+                      <div className="text-lg font-bold text-orange-400">{opp.adjOE}</div>
+                    </div>
+                    <div className="bg-slate-700 rounded p-2">
+                      <div className="text-gray-400">AdjDE</div>
+                      <div className="text-lg font-bold text-blue-400">{opp.adjDE}</div>
+                    </div>
+                    <div className="bg-slate-700 rounded p-2">
+                      <div className="text-gray-400">Barthag</div>
+                      <div className="text-lg font-bold">{opp.barthag.toFixed(3)}</div>
+                    </div>
+                    <div className="bg-slate-700 rounded p-2">
+                      <div className="text-gray-400">Record</div>
+                      <div className="text-lg font-bold">{opp.rec}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Previous matchup if exists */}
+                {gameData && (
+                  <div className="bg-slate-800 rounded-lg p-3 mb-3">
+                    <h3 className="font-semibold text-sm mb-2 text-emerald-400">Previous Matchup</h3>
+                    <div className="flex justify-between items-center text-sm mb-2">
+                      <span>Louisville <span className="font-bold text-green-400">{gameData.lou_final}</span></span>
+                      <span className={`px-2 py-0.5 rounded text-xs font-bold ${gameData.result === "W" ? "bg-emerald-600" : "bg-red-600"}`}>{gameData.result}</span>
+                      <span>{prepOpponent} <span className="font-bold text-red-400">{gameData.opp_final}</span></span>
+                    </div>
+                    <div className="text-xs text-gray-400">{gameData.date} • Margin: +{gameData.lou_final - gameData.opp_final}</div>
+                  </div>
+                )}
+
+                {/* Louisville vs quality tier */}
+                <div className="bg-slate-800 rounded-lg p-3 mb-3">
+                  <h3 className="font-semibold text-sm mb-2">Louisville vs {isT50 ? "Top 50" : "Outside 50"} Teams</h3>
+                  <div className="grid grid-cols-3 gap-2 text-center text-xs">
+                    <div className="bg-slate-700 rounded p-2">
+                      <div className="text-gray-400">Record</div>
+                      <div className="text-lg font-bold">{bucketRecord}</div>
+                    </div>
+                    <div className="bg-slate-700 rounded p-2">
+                      <div className="text-gray-400">Avg Margin</div>
+                      <div className={`text-lg font-bold ${bucketAvgMargin >= 0 ? "text-green-400" : "text-red-400"}`}>{bucketAvgMargin >= 0 ? "+" : ""}{bucketAvgMargin.toFixed(1)}</div>
+                    </div>
+                    <div className="bg-slate-700 rounded p-2">
+                      <div className="text-gray-400">Games</div>
+                      <div className="text-lg font-bold">{qualityBucket.length}</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Defensive synergy placeholder */}
+                <div className="bg-slate-800 rounded-lg p-3 mb-3 border border-dashed border-slate-600">
+                  <h3 className="font-semibold text-sm mb-2 text-gray-500">🔒 Opponent Defensive Synergy</h3>
+                  <p className="text-gray-600 text-xs">Defensive play type data coming soon. Will show opponent's defensive efficiency by play type and Louisville's matchup advantages.</p>
+                  <div className="mt-2 grid grid-cols-2 gap-2 text-xs opacity-30">
+                    {playTypes.slice(0,6).map(pt => (
+                      <div key={pt} className="bg-slate-700 rounded p-2 flex justify-between">
+                        <span>{pt}</span>
+                        <span>— PPP allowed</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Key players to watch */}
+                <div className="bg-slate-800 rounded-lg p-3">
+                  <h3 className="font-semibold text-sm mb-2">Louisville Key Players</h3>
+                  <p className="text-gray-400 text-xs mb-2">Top performers in core play types</p>
+                  {playTypes.filter(pt => teamStats[pt].poss >= 80).map(pt => {
+                    const bestPlayer = playerNames.reduce((best, name) => {
+                      const d = players[name].plays[pt];
+                      if (!d || d.poss < 10) return best;
+                      if (!best || d.ppp > players[best].plays[pt].ppp) return name;
+                      return best;
+                    }, null);
+                    if (!bestPlayer) return null;
+                    const d = players[bestPlayer].plays[pt];
+                    return (
+                      <div key={pt} className="flex items-center justify-between bg-slate-700 rounded p-2 mb-1 text-xs">
+                        <div className="flex items-center gap-2">
+                          <span className="text-yellow-400 font-semibold w-28">{pt}</span>
+                          <span className="text-white">{getDisplayName(bestPlayer)}</span>
+                        </div>
+                        <span className={`font-bold ${getPPPColor(d.ppp)}`}>{d.ppp.toFixed(2)} PPP ({d.poss}p)</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          })()}
+        </div>
+      )}
       {/* PROFILES TAB */}
       {view === "profile" && (
         <div>
