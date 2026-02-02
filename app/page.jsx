@@ -329,6 +329,7 @@ const [removedPlay, setRemovedPlay] = useState(null);
 const [intelSection, setIntelSection] = useState(“risk”);
 const [scenarioSection, setScenarioSection] = useState(“dependency”);
 const [playbookSection, setPlaybookSection] = useState(“playtypes”);
+const [showGuide, setShowGuide] = useState(false);
 
 const player = players[selectedPlayer];
 
@@ -472,9 +473,40 @@ const playFrequency = Object.entries(teamStats).sort((a, b) => b[1].poss - a[1].
 return (
 <div className="p-3 bg-slate-900 min-h-screen text-white text-sm">
 <h1 className="text-xl font-bold text-center text-red-500">Louisville Cardinals</h1>
-<p className="text-center text-gray-400 text-xs mb-3">Advanced Synergy Analysis • 2025-26</p>
+<div className="flex justify-center items-center gap-2">
+<p className="text-center text-gray-400 text-xs">Advanced Synergy Analysis • 2025-26</p>
+<button onClick={() => setShowGuide(!showGuide)} className=“text-xs bg-slate-700 hover:bg-slate-600 px-2 py-0.5 rounded text-gray-300”>{showGuide ? “✕ Close” : “ℹ️ Guide”}</button>
+</div>
 
 ```
+  {showGuide && (
+    <div className="bg-slate-800 rounded-lg p-3 my-3 border border-slate-600">
+      <h2 className="font-bold text-yellow-400 mb-2 text-sm">How to Use This Dashboard</h2>
+      <div className="space-y-2 text-xs text-gray-300">
+        <div>
+          <span className="font-semibold text-white">Key Metric — PPP (Points Per Possession):</span> The core efficiency stat throughout. Above 1.00 is good, above 1.20 is elite, below 0.80 is poor. Color-coded: <span className="text-emerald-400">green</span> = efficient, <span className="text-yellow-400">yellow</span> = average, <span className="text-red-400">red</span> = inefficient.
+        </div>
+        <div className="border-t border-slate-700 pt-2">
+          <span className="font-semibold text-white">Tabs:</span>
+        </div>
+        <div className="pl-2 space-y-1.5">
+          <div><span className="text-red-400 font-semibold">DNA</span> — Team overview. Every player's efficiency, volume, and role tier at a glance. Start here.</div>
+          <div><span className="text-blue-400 font-semibold">Player Intel</span> — Deeper dives. <em>Risk Index</em> shows each player's turnover and inefficiency exposure. <em>Clutch Splits</em> breaks down shot selection and FG% in close games vs blowouts.</div>
+          <div><span className="text-blue-400 font-semibold">Scenarios</span> — What-if analysis. <em>Dependency</em> shows how the team's PPP changes without each player. <em>Simulator</em> lets you remove a play type and see where those possessions redistribute.</div>
+          <div><span className="text-blue-400 font-semibold">Playbook</span> — Scheme insights. <em>Play Types</em> ranks every action (spot up, P&R, cut, etc.) with the best player for each. <em>Breakdown</em> shows the win/loss formula and how each player fails.</div>
+          <div><span className="text-blue-400 font-semibold">Scoring Runs</span> — Game flow. 5-minute scoring segments showing margin swings, run patterns, and momentum shifts across all games.</div>
+          <div><span className="text-blue-400 font-semibold">Profiles</span> — Individual deep dives. Radar charts, shot diet, tendencies, and every play type for a single player. Use the dropdown to switch players.</div>
+        </div>
+        <div className="border-t border-slate-700 pt-2">
+          <span className="font-semibold text-white">Possession counts <span className="text-gray-500">(Xp)</span>:</span> Shown throughout as sample size context. Higher = more reliable. Below 15p treat with caution.
+        </div>
+        <div>
+          <span className="font-semibold text-white">Tier System:</span> Players ranked 1-4 based on usage + efficiency. Tier 1 = primary options, Tier 4 = limited/situational.
+        </div>
+      </div>
+    </div>
+  )}
+
   <div className="flex gap-1 mb-3 justify-center flex-wrap">
     {[
       {k:"dna",l:"DNA"},
