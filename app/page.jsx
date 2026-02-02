@@ -993,7 +993,7 @@ return (
 
       <div className="bg-slate-800 rounded-lg p-3 mb-3">
         <h2 className="font-bold text-red-400 mb-2">💀 Player Failure Modes</h2>
-        <p className="text-gray-400 text-xs mb-3">How each player breaks down - what to avoid</p>
+        <p className="text-gray-400 text-xs mb-3">How each player breaks down - what to avoid. Possession counts shown for sample size context.</p>
         
         <div className="space-y-2">
           <div className="bg-red-900/20 rounded p-2 border border-red-700">
@@ -1002,21 +1002,22 @@ return (
               <span className="text-xs bg-red-600 px-1.5 py-0.5 rounded">HIGH RISK</span>
             </div>
             <div className="text-xs text-gray-300">
-              <div>❌ P&R: 0.52 PPP, 18% FG, 6 TO</div>
-              <div>❌ Transition: 0.83 PPP, 0% 3PT</div>
-              <div className="text-emerald-400">✓ Safe: Cut (1.92), Spot Up (1.29)</div>
+              <div>❌ P&R: 0.52 PPP, 18% FG, 6 TO <span className="text-gray-500">(31p)</span></div>
+              <div>❌ Transition: 0.83 PPP, 0% 3PT <span className="text-gray-500">(47p)</span></div>
+              <div className="text-emerald-400">✓ Safe: Cut 1.92 <span className="text-gray-500">(13p)</span>, Spot Up 1.29 <span className="text-gray-500">(34p)</span></div>
             </div>
           </div>
 
-          <div className="bg-red-900/20 rounded p-2 border border-red-700">
+          <div className="bg-orange-900/20 rounded p-2 border border-orange-700">
             <div className="flex justify-between items-center mb-1">
-              <span className="font-bold text-red-400">M. Brown</span>
-              <span className="text-xs bg-red-600 px-1.5 py-0.5 rounded">HIGH RISK</span>
+              <span className="font-bold text-orange-400">M. Brown</span>
+              <span className="text-xs bg-orange-600 px-1.5 py-0.5 rounded">MED RISK</span>
             </div>
             <div className="text-xs text-gray-300">
-              <div>❌ Handoff: 0.35 PPP, 0% 3PT, 4 TO</div>
-              <div>❌ Off Screen: 0.27 PPP, 0% 3PT</div>
-              <div className="text-emerald-400">✓ Safe: ISO (1.17), Spot Up (1.61)</div>
+              <div>❌ Handoff: 0.35 PPP, 0% 3PT, 4 TO <span className="text-gray-500">(20p)</span></div>
+              <div>❌ Off Screen: 0.27 PPP, 0% 3PT <span className="text-gray-500">(15p)</span></div>
+              <div className="text-emerald-400">✓ Safe: ISO 1.17 <span className="text-gray-500">(30p)</span>, Spot Up 1.61 <span className="text-gray-500">(31p)</span></div>
+              <div className="text-yellow-500 mt-1 italic">⚠️ Low volume on both failure modes — 20p and 15p samples. Monitor but don't overreact.</div>
             </div>
           </div>
 
@@ -1026,9 +1027,9 @@ return (
               <span className="text-xs bg-orange-600 px-1.5 py-0.5 rounded">MED RISK</span>
             </div>
             <div className="text-xs text-gray-300">
-              <div>❌ Spot Up: 0.65 PPP, 16% 3PT - can't shoot</div>
-              <div>❌ ISO: 0.33 PPP, 20% FG</div>
-              <div className="text-emerald-400">✓ Safe: Cut (1.50), Transition (1.18)</div>
+              <div>❌ Spot Up: 0.65 PPP, 16% 3PT <span className="text-gray-500">(31p)</span></div>
+              <div>❌ ISO: 0.33 PPP, 20% FG <span className="text-gray-500">(6p)</span></div>
+              <div className="text-emerald-400">✓ Safe: Cut 1.50 <span className="text-gray-500">(24p)</span>, Transition 1.18 <span className="text-gray-500">(22p)</span></div>
             </div>
           </div>
 
@@ -1038,9 +1039,9 @@ return (
               <span className="text-xs bg-orange-600 px-1.5 py-0.5 rounded">MED RISK</span>
             </div>
             <div className="text-xs text-gray-300">
-              <div>❌ P&R TO: 13 TO on 60 poss (22%)</div>
-              <div>❌ ISO: 0.63 PPP, 18% FG</div>
-              <div className="text-emerald-400">✓ Safe: Spot Up (1.32), Off Screen (1.21), Cut (1.59)</div>
+              <div>❌ P&R TO: 13 TO on 60p (22%) <span className="text-gray-500">(60p)</span></div>
+              <div>❌ ISO: 0.63 PPP, 18% FG <span className="text-gray-500">(22p)</span></div>
+              <div className="text-emerald-400">✓ Safe: Spot Up 1.32 <span className="text-gray-500">(62p)</span>, Off Screen 1.21 <span className="text-gray-500">(19p)</span>, Cut 1.59 <span className="text-gray-500">(17p)</span></div>
             </div>
           </div>
 
@@ -1050,9 +1051,9 @@ return (
               <span className="text-xs bg-yellow-600 px-1.5 py-0.5 rounded">LOW RISK</span>
             </div>
             <div className="text-xs text-gray-300">
-              <div>⚠️ P&R Handler: 0.74 PPP (19p), 7 TO (37% rate!)</div>
-              <div>⚠️ Transition: 0.89 PPP (44p), 23% 3PT</div>
-              <div className="text-emerald-400">✓ Safe: Spot Up (1.52 PPP), Handoff (1.44 PPP)</div>
+              <div>⚠️ P&R Handler: 0.74 PPP, 7 TO (37% rate!) <span className="text-gray-500">(19p)</span></div>
+              <div>⚠️ Transition: 0.89 PPP, 23% 3PT <span className="text-gray-500">(44p)</span></div>
+              <div className="text-emerald-400">✓ Safe: Spot Up 1.52 <span className="text-gray-500">(79p)</span>, Handoff 1.44 <span className="text-gray-500">(18p)</span></div>
             </div>
           </div>
 
@@ -1062,9 +1063,9 @@ return (
               <span className="text-xs bg-emerald-600 px-1.5 py-0.5 rounded">STABLE</span>
             </div>
             <div className="text-xs text-gray-300">
-              <div>⚠️ Post Up: 0.73 PPP - not a post scorer</div>
-              <div>⚠️ P&R Handler: 0.00 PPP (4p) - don't let him dribble</div>
-              <div className="text-emerald-400">✓ Safe: Everything at rim - Cut (1.64), Roll (1.28), Putback (1.31)</div>
+              <div>⚠️ Post Up: 0.73 PPP <span className="text-gray-500">(22p)</span></div>
+              <div>⚠️ P&R Handler: 0.00 PPP <span className="text-gray-500">(4p)</span></div>
+              <div className="text-emerald-400">✓ Safe: Cut 1.64 <span className="text-gray-500">(28p)</span>, Roll 1.28 <span className="text-gray-500">(32p)</span>, Putback 1.31 <span className="text-gray-500">(29p)</span></div>
             </div>
           </div>
 
@@ -1074,9 +1075,9 @@ return (
               <span className="text-xs bg-emerald-600 px-1.5 py-0.5 rounded">STABLE</span>
             </div>
             <div className="text-xs text-gray-300">
-              <div>⚠️ Handoff: 0.00 PPP (2p) - small sample</div>
-              <div>⚠️ Off Screen: 0.50 PPP (6p) - not his game</div>
-              <div className="text-emerald-400">✓ Safe: Almost everything - Trans (1.26), Spot (1.51), Post (1.03), ISO (1.60)</div>
+              <div>⚠️ Handoff: 0.00 PPP <span className="text-gray-500">(2p)</span></div>
+              <div>⚠️ Off Screen: 0.50 PPP <span className="text-gray-500">(6p)</span></div>
+              <div className="text-emerald-400">✓ Safe: Trans 1.26 <span className="text-gray-500">(38p)</span>, Spot 1.51 <span className="text-gray-500">(37p)</span>, Post 1.03 <span className="text-gray-500">(29p)</span>, ISO 1.60 <span className="text-gray-500">(10p)</span></div>
             </div>
           </div>
         </div>
