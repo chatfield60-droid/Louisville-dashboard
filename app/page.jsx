@@ -1,4 +1,4 @@
-use client";
+"use client";
 import React, { useState, useMemo } from 'react';
 
 // Louisville Cardinals - COMPLETE Synergy Data (86 files, 10 players, 10 play types)
