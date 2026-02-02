@@ -1,4 +1,3 @@
-"use client";
 import React, { useState, useMemo } from 'react';
 
 // Louisville Cardinals - COMPLETE Synergy Data (86 files, 10 players, 10 play types)
@@ -194,6 +193,8 @@ const RadarChart = ({ data, title, color = "#f97316", size = 200 }) => {
   const center = size / 2;
   const maxRadius = size * 0.35;
   const levels = [25, 50, 75, 100];
+  const labelOffset = Math.max(20, size * 0.09);
+  const labelFontSize = Math.max(8, size * 0.035);
   
   const points = data.map((d, i) => {
     const angle = (Math.PI * 2 * i) / data.length - Math.PI / 2;
@@ -201,8 +202,8 @@ const RadarChart = ({ data, title, color = "#f97316", size = 200 }) => {
     return {
       x: center + radius * Math.cos(angle),
       y: center + radius * Math.sin(angle),
-      labelX: center + (maxRadius + 18) * Math.cos(angle),
-      labelY: center + (maxRadius + 18) * Math.sin(angle),
+      labelX: center + (maxRadius + labelOffset) * Math.cos(angle),
+      labelY: center + (maxRadius + labelOffset) * Math.sin(angle),
       label: d.label,
       value: d.value
     };
@@ -224,7 +225,7 @@ const RadarChart = ({ data, title, color = "#f97316", size = 200 }) => {
         <path d={pathD} fill={color} fillOpacity="0.3" stroke={color} strokeWidth="2" />
         {points.map((p, i) => <circle key={i} cx={p.x} cy={p.y} r="3" fill={color} />)}
         {points.map((p, i) => (
-          <text key={i} x={p.labelX} y={p.labelY} textAnchor="middle" dominantBaseline="middle" className="fill-gray-400" style={{ fontSize: '7px' }}>{p.label}</text>
+          <text key={i} x={p.labelX} y={p.labelY} textAnchor="middle" dominantBaseline="middle" className="fill-gray-400" style={{ fontSize: `${labelFontSize}px` }}>{p.label}</text>
         ))}
       </svg>
     </div>
@@ -274,51 +275,78 @@ const segmentData = [
     opp: { h1: [0, 8, 13, 6], h2: [12, 9, 8, 22] } },
 ];
 
-const clutchData = {
-  "Ryan Conwell": {
-    close: { three:[4,8], mid:[1,3], rim:[2,3], ft:[10,15] },
-    blowout: { three:[10,24], mid:[0,2], rim:[3,6], ft:[13,14] },
-  },
-  "Mikel Brown III": {
-    close: { three:[2,10], mid:[2,4], rim:[2,2], ft:[9,9] },
-    blowout: { three:[7,15], mid:[0,1], rim:[9,12], ft:[15,18] },
-  },
-  "Isaac McKneely": {
-    close: { three:[7,12], mid:[0,1], rim:[0,0], ft:[0,0] },
-    blowout: { three:[7,21], mid:[0,1], rim:[3,3], ft:[1,2] },
-  },
-  "Sananda Fru": {
-    close: { three:[0,0], mid:[0,0], rim:[6,6], ft:[1,1] },
-    blowout: { three:[1,2], mid:[0,1], rim:[10,12], ft:[9,12] },
-  },
-  "J'Vonne Hadley": {
-    close: { three:[1,2], mid:[0,0], rim:[2,3], ft:[0,4] },
-    blowout: { three:[2,5], mid:[3,3], rim:[5,6], ft:[4,8] },
-  },
-  "Khani Rooths": {
-    close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[3,3] },
-    blowout: { three:[2,10], mid:[1,1], rim:[11,13], ft:[7,9] },
-  },
-  "Adrian Wooley": {
-    close: { three:[1,2], mid:[0,2], rim:[2,3], ft:[1,1] },
-    blowout: { three:[3,10], mid:[1,1], rim:[4,7], ft:[7,7] },
-  },
-  "Kobe Rodgers": {
-    close: { three:[0,1], mid:[0,0], rim:[1,1], ft:[0,0] },
-    blowout: { three:[2,5], mid:[2,2], rim:[2,3], ft:[9,9] },
-  },
-  "Aly Khalifa": {
-    close: { three:[0,1], mid:[0,0], rim:[3,4], ft:[0,0] },
-    blowout: { three:[0,1], mid:[0,1], rim:[1,2], ft:[1,2] },
-  },
-  "Vangelis Zougris": {
-    close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] },
-    blowout: { three:[0,0], mid:[0,0], rim:[3,9], ft:[3,4] },
-  },
-  "Kasean Pryor": {
-    close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] },
-    blowout: { three:[1,1], mid:[0,0], rim:[0,0], ft:[0,2] },
-  },
+const opponentRankings = {
+  "SC State": { rank: 359, adjOE: 96.7, adjDE: 120.6, barthag: .0733, rec: "5-16" },
+  "Jackson State": { rank: 342, adjOE: 99.0, adjDE: 117.1, barthag: .1275, rec: "6-15" },
+  "Kentucky": { rank: 43, adjOE: 118.3, adjDE: 100.8, barthag: .8621, rec: "15-7" },
+  "Ohio": { rank: 225, adjOE: 106.2, adjDE: 111.0, barthag: .3747, rec: "12-11" },
+  "Cincinnati": { rank: 48, adjOE: 106.9, adjDE: 93.4, barthag: .8269, rec: "11-11" },
+  "Eastern Michigan": { rank: 214, adjOE: 104.1, adjDE: 107.8, barthag: .4005, rec: "9-13" },
+  "NJIT": { rank: 321, adjOE: 99.0, adjDE: 113.1, barthag: .1775, rec: "11-12" },
+  "Arkansas": { rank: 28, adjOE: 126.8, adjDE: 103.8, barthag: .9087, rec: "16-6" },
+  "Indiana": { rank: 23, adjOE: 124.7, adjDE: 100.4, barthag: .9233, rec: "15-7" },
+};
+
+const clutchDataPerGame = {
+  "Ryan Conwell": [
+    { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[1,1], ft:[7,7] } },
+    { game: "Jackson State", close: { three:[1,1], mid:[0,0], rim:[0,0], ft:[1,1] }, blowout: { three:[3,3], mid:[0,0], rim:[1,1], ft:[4,4] } },
+    { game: "Kentucky", close: { three:[2,2], mid:[1,1], rim:[0,0], ft:[6,6] }, blowout: { three:[2,2], mid:[0,0], rim:[1,1], ft:[2,2] } },
+    { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[2,2] }, blowout: { three:[5,5], mid:[0,1], rim:[5,5], ft:[4,4] } },
+  ],
+  "Mikel Brown III": [
+    { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[3,3], ft:[2,2] } },
+    { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,2], mid:[0,0], rim:[3,3], ft:[6,6] } },
+    { game: "Kentucky", close: { three:[2,2], mid:[1,1], rim:[2,2], ft:[6,6] }, blowout: { three:[1,1], mid:[1,1], rim:[1,1], ft:[4,4] } },
+    { game: "Ohio", close: { three:[1,1], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[4,4], ft:[3,3] } },
+  ],
+  "Isaac McKneely": [
+    { game: "SC State", close: { three:[2,2], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,3], mid:[0,0], rim:[1,1], ft:[0,0] } },
+    { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,2], mid:[0,0], rim:[1,1], ft:[0,0] } },
+    { game: "Kentucky", close: { three:[1,1], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,2], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Ohio", close: { three:[2,2], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,5], mid:[0,0], rim:[0,0], ft:[0,0] } },
+  ],
+  "Sananda Fru": [
+    { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[1,1], ft:[2,2] } },
+    { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[2,2], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[4,4], ft:[0,0] } },
+    { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[2,2], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[2,2], ft:[2,2] } },
+    { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[2,2], ft:[2,2] } },
+  ],
+  "J'Vonne Hadley": [
+    { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[4,4], ft:[2,2] } },
+    { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[1,1], mid:[1,1], rim:[1,1], ft:[0,0] } },
+    { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,1], rim:[3,3], ft:[0,0] } },
+  ],
+  "Khani Rooths": [
+    { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[7,7], ft:[3,3] } },
+    { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[2,2] }, blowout: { three:[1,1], mid:[1,1], rim:[3,3], ft:[3,3] } },
+    { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[3,3], ft:[2,2] } },
+  ],
+  "Adrian Wooley": [
+    { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[3,3] } },
+    { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[0,0], mid:[1,1], rim:[1,1], ft:[3,3] } },
+    { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[1,1] }, blowout: { three:[2,2], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,2], mid:[0,1], rim:[0,0], ft:[0,0] } },
+  ],
+  "Kobe Rodgers": [
+    { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[0,0], ft:[6,6] } },
+    { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[1,1], ft:[2,2] } },
+    { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[1,1], rim:[0,0], ft:[0,0] } },
+    { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[1,1], rim:[2,2], ft:[0,0] } },
+  ],
+  "Aly Khalifa": [
+    { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[1,1] } },
+    { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] } },
+    { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] } },
+  ],
+  "Vangelis Zougris": [
+    { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[2,2], ft:[1,1] } },
+    { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[2,2] } },
+    { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,2], mid:[0,0], rim:[3,3], ft:[0,0] } },
+  ],
+  "Kasean Pryor": [
+    { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[3,3], ft:[0,1] } },
+  ],
 };
 
 export default function App() {
@@ -330,6 +358,9 @@ export default function App() {
   const [scenarioSection, setScenarioSection] = useState("dependency");
   const [playbookSection, setPlaybookSection] = useState("playtypes");
   const [showGuide, setShowGuide] = useState(false);
+  const [segFilter, setSegFilter] = useState("all");
+  const [clutchNote, setClutchNote] = useState(true);
+  const [clutchFilter, setClutchFilter] = useState("all");
 
   const player = players[selectedPlayer];
 
@@ -614,16 +645,17 @@ export default function App() {
 
           <div className="bg-slate-800 rounded-lg p-3 mb-3">
             <h3 className="font-semibold text-sm mb-2">📊 Volatility Analysis</h3>
-            <p className="text-gray-400 text-xs mb-2">Players with biggest gap between best and worst play types</p>
+            <p className="text-gray-400 text-xs mb-2">Gap between best and worst core play types (≥5% usage share)</p>
             <div className="space-y-2">
               {playerNames.map(name => {
                 const p = players[name];
-                const validPlays = Object.entries(p.plays).filter(([_, d]) => d.poss >= 5);
+                const totalPoss = Object.values(p.plays).reduce((s, d) => s + d.poss, 0);
+                const validPlays = Object.entries(p.plays).filter(([_, d]) => d.poss >= 10 && (d.poss / totalPoss) >= 0.05);
                 if (validPlays.length < 2) return null;
                 const best = validPlays.reduce((a, b) => a[1].ppp > b[1].ppp ? a : b);
                 const worst = validPlays.reduce((a, b) => a[1].ppp < b[1].ppp ? a : b);
                 const gap = best[1].ppp - worst[1].ppp;
-                if (gap < 0.4) return null;
+                if (gap < 0.3) return null;
                 
                 return (
                   <div key={name} className="bg-slate-700 rounded p-2">
@@ -669,19 +701,64 @@ export default function App() {
           {intelSection === "clutch" && (() => {
             const shotTypes = ["three","mid","rim","ft"];
             const shotLabels = {"three":"3PT","mid":"MID","rim":"RIM","ft":"FT"};
-            const clutchPlayers = Object.entries(clutchData).filter(([name]) => {
-              const d = clutchData[name];
-              const closeAtt = shotTypes.reduce((a,s) => a + d.close[s][1], 0);
-              const blowAtt = shotTypes.reduce((a,s) => a + d.blowout[s][1], 0);
-              return closeAtt + blowAtt > 0;
-            });
+            const clutchGames = ["SC State", "Jackson State", "Kentucky", "Ohio"];
+            const clutchT50 = clutchGames.filter(g => opponentRankings[g] && opponentRankings[g].rank <= 50);
+            const clutchOutside = clutchGames.filter(g => opponentRankings[g] && opponentRankings[g].rank > 50);
+            
+            const filteredGames = clutchFilter === "t50" ? clutchT50 
+                                : clutchFilter === "outside" ? clutchOutside 
+                                : clutchGames;
+            
+            const aggregatePlayer = (name) => {
+              const games = clutchDataPerGame[name] || [];
+              const filtered = games.filter(g => filteredGames.includes(g.game));
+              const agg = { close: {three:[0,0],mid:[0,0],rim:[0,0],ft:[0,0]}, blowout: {three:[0,0],mid:[0,0],rim:[0,0],ft:[0,0]} };
+              filtered.forEach(g => {
+                ["close","blowout"].forEach(sit => {
+                  shotTypes.forEach(st => {
+                    agg[sit][st][0] += g[sit][st][0];
+                    agg[sit][st][1] += g[sit][st][1];
+                  });
+                });
+              });
+              return agg;
+            };
+            
+            const clutchPlayers = Object.keys(clutchDataPerGame).map(name => {
+              const d = aggregatePlayer(name);
+              const att = shotTypes.reduce((a,s) => a + d.close[s][1] + d.blowout[s][1], 0);
+              return [name, d, att];
+            }).filter(([,,att]) => att > 0);
             
             return (
             <>
               <div className="bg-slate-800 rounded-lg p-3 mb-3">
                 <h2 className="font-bold text-yellow-400 mb-1">🔥 Clutch Splits</h2>
                 <p className="text-gray-400 text-xs mb-1">Shot diet & FG% when game is close/trailing (lead {"<"} 10) vs comfortable (lead ≥ 10)</p>
-                <p className="text-gray-500 text-[10px] mb-3">Based on 4 games with play-by-play data (SC State, Jackson State, Kentucky, Ohio)</p>
+                
+                <div className="flex gap-1 mb-2">
+                  <button onClick={() => setClutchFilter("all")} className={`px-2 py-1 rounded text-xs ${clutchFilter==="all"?"bg-blue-600":"bg-slate-700"}`}>All ({clutchGames.length})</button>
+                  <button onClick={() => setClutchFilter("t50")} className={`px-2 py-1 rounded text-xs ${clutchFilter==="t50"?"bg-red-600":"bg-slate-700"}`}>Top 50 ({clutchT50.length})</button>
+                  <button onClick={() => setClutchFilter("outside")} className={`px-2 py-1 rounded text-xs ${clutchFilter==="outside"?"bg-slate-600":"bg-slate-700"}`}>Outside 50 ({clutchOutside.length})</button>
+                </div>
+                
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {clutchGames.map(g => {
+                    const r = opponentRankings[g];
+                    const isT50 = r && r.rank <= 50;
+                    const dimmed = (clutchFilter === "t50" && !isT50) || (clutchFilter === "outside" && isT50);
+                    return (
+                      <span key={g} className={`text-[10px] px-1.5 py-0.5 rounded ${dimmed ? "bg-slate-800 text-slate-600" : isT50 ? "bg-red-900/50 text-red-300 border border-red-700" : "bg-slate-700 text-slate-400"}`}>
+                        {g} <span className="font-mono">#{r.rank}</span>
+                      </span>
+                    );
+                  })}
+                </div>
+                <div className="text-[10px] text-slate-500 mb-3">
+                  {clutchFilter === "all" ? <>Showing all {clutchGames.length} games • <span className="text-red-300">{clutchT50.length} Top 50</span> ({clutchT50.join(", ") || "none"}) • <span className="text-slate-400">{clutchOutside.length} outside</span></> 
+                  : clutchFilter === "t50" ? <span className="text-red-300">Filtered to {clutchT50.length} Top 50 opponent{clutchT50.length !== 1 ? "s" : ""}: {clutchT50.join(", ")}</span>
+                  : <span className="text-slate-400">Filtered to {clutchOutside.length} outside Top 50: {clutchOutside.join(", ")}</span>}
+                </div>
 
                 <div className="space-y-3">
                   {clutchPlayers.map(([name, d]) => {
@@ -702,7 +779,10 @@ export default function App() {
                     return (
                       <div key={name} className="bg-slate-700/50 rounded p-2">
                         <div className="flex justify-between items-center mb-2">
-                          <span className="font-bold text-sm">{getDisplayName(name)}</span>
+                          <div className="flex items-center gap-2">
+                            <span className="font-bold text-sm">{getDisplayName(name)}</span>
+                            <span className="text-[10px] text-slate-500 font-mono">{closeTotal + blowTotal} att</span>
+                          </div>
                           <div className="flex gap-2 text-[10px]">
                             {fgDiff !== null && (
                               <span className={fgDiff > 5 ? "text-green-400 font-bold" : fgDiff < -5 ? "text-red-400 font-bold" : "text-slate-400"}>
@@ -846,20 +926,6 @@ export default function App() {
                 <p className="text-gray-400">&lt;5% of possessions</p>
               </div>
             </div>
-          </div>
-
-          <div className="bg-slate-800 rounded-lg p-3">
-            <h3 className="font-semibold text-sm mb-2">Inefficiency Tax</h3>
-            <p className="text-gray-400 text-xs mb-2">High volume + low efficiency = wasted possessions</p>
-            {dependencyAnalysis.filter(d => d.pctOfPoss > 10 && d.ppp < 0.95).map(d => {
-              const tax = d.poss * (1.0 - d.ppp);
-              return (
-                <div key={d.playType} className="flex justify-between bg-red-900/30 rounded p-2 text-xs mb-1">
-                  <span>{d.playType} ({d.poss} poss at {d.ppp.toFixed(2)} PPP)</span>
-                  <span className="text-red-400">-{tax.toFixed(0)} pts vs baseline</span>
-                </div>
-              );
-            })}
           </div>
         </div>
             </>
@@ -1133,14 +1199,17 @@ export default function App() {
 
       {view === "segments" && (() => {
         const segLabels = ["20-15","15-10","10-5","5-0"];
-        const allGames = segmentData;
+        const allGamesRaw = segmentData;
+        const allGames = segFilter === "t50" ? allGamesRaw.filter(g => opponentRankings[g.opponent] && opponentRankings[g.opponent].rank <= 50) 
+                       : segFilter === "outside" ? allGamesRaw.filter(g => opponentRankings[g.opponent] && opponentRankings[g.opponent].rank > 50)
+                       : allGamesRaw;
         const totals = { lou: { h1:[0,0,0,0], h2:[0,0,0,0] }, opp: { h1:[0,0,0,0], h2:[0,0,0,0] } };
         allGames.forEach(g => {
           for (let i=0;i<4;i++) { totals.lou.h1[i]+=g.lou.h1[i]; totals.lou.h2[i]+=g.lou.h2[i]; totals.opp.h1[i]+=g.opp.h1[i]; totals.opp.h2[i]+=g.opp.h2[i]; }
         });
         const n = allGames.length;
-        const avg = { lou: { h1: totals.lou.h1.map(v=>v/n), h2: totals.lou.h2.map(v=>v/n) }, opp: { h1: totals.opp.h1.map(v=>v/n), h2: totals.opp.h2.map(v=>v/n) } };
-        const selGame = segGame === "all" ? null : allGames[parseInt(segGame)];
+        const avg = n > 0 ? { lou: { h1: totals.lou.h1.map(v=>v/n), h2: totals.lou.h2.map(v=>v/n) }, opp: { h1: totals.opp.h1.map(v=>v/n), h2: totals.opp.h2.map(v=>v/n) } } : { lou: { h1:[0,0,0,0], h2:[0,0,0,0] }, opp: { h1:[0,0,0,0], h2:[0,0,0,0] } };
+        const selGame = segGame === "all" ? null : allGamesRaw[parseInt(segGame)];
         const displayLou = selGame ? { h1: selGame.lou.h1, h2: selGame.lou.h2 } : avg.lou;
         const displayOpp = selGame ? { h1: selGame.opp.h1, h2: selGame.opp.h2 } : avg.opp;
 
@@ -1148,19 +1217,43 @@ export default function App() {
         const diffH2 = displayLou.h2.map((v,i) => v - displayOpp.h2[i]);
         const fmt = (v) => selGame ? v : v.toFixed(1);
 
+        const t50Count = allGamesRaw.filter(g => opponentRankings[g.opponent] && opponentRankings[g.opponent].rank <= 50).length;
+        const outsideCount = allGamesRaw.length - t50Count;
+
         return (
         <div>
           <div className="bg-slate-800 rounded-lg p-3 mb-3">
             <h2 className="font-bold text-yellow-400 mb-2 text-center">5-Minute Scoring Segments</h2>
+            
+            <div className="flex justify-center gap-1 mb-2">
+              <button onClick={() => { setSegFilter("all"); setSegGame("all"); }} className={`px-2 py-1 rounded text-xs ${segFilter==="all"?"bg-blue-600":"bg-slate-700"}`}>All ({allGamesRaw.length})</button>
+              <button onClick={() => { setSegFilter("t50"); setSegGame("all"); }} className={`px-2 py-1 rounded text-xs ${segFilter==="t50"?"bg-red-600":"bg-slate-700"}`}>T-Rank Top 50 ({t50Count})</button>
+              <button onClick={() => { setSegFilter("outside"); setSegGame("all"); }} className={`px-2 py-1 rounded text-xs ${segFilter==="outside"?"bg-slate-600":"bg-slate-700"}`}>Outside 50 ({outsideCount})</button>
+            </div>
+            
             <div className="flex justify-center gap-1 mb-3 flex-wrap">
               <button onClick={() => setSegGame("all")} className={`px-2 py-1 rounded text-xs ${segGame==="all"?"bg-blue-600":"bg-slate-700"}`}>Season Avg ({n} games)</button>
-              {allGames.map((g,i) => (
-                <button key={i} onClick={() => setSegGame(String(i))} className={`px-2 py-1 rounded text-xs ${segGame===String(i)?"bg-blue-600":"bg-slate-700"}`}>
-                  {g.result === "W" ? "✓" : "✗"} {g.opponent} ({g.date})
+              {allGamesRaw.map((g,i) => {
+                const r = opponentRankings[g.opponent];
+                const isT50 = r && r.rank <= 50;
+                const dimmed = (segFilter === "t50" && !isT50) || (segFilter === "outside" && isT50);
+                return (
+                <button key={i} onClick={() => setSegGame(String(i))} className={`px-2 py-1 rounded text-xs ${segGame===String(i)?"bg-blue-600": dimmed ? "bg-slate-800 text-slate-600" : "bg-slate-700"}`}>
+                  {g.result === "W" ? "✓" : "✗"} {g.opponent} {r ? <span className={`font-mono ${isT50?"text-red-400":"text-slate-500"}`}>#{r.rank}</span> : ""}
                 </button>
-              ))}
+                );
+              })}
             </div>
-            {selGame && <p className="text-center text-sm mb-2 text-slate-300">{selGame.result === "W" ? "Win" : "Loss"} {selGame.lou_final}-{selGame.opp_final} vs {selGame.opponent}</p>}
+            {selGame && (
+              <div className="text-center mb-2">
+                <span className="text-sm text-slate-300">{selGame.result === "W" ? "Win" : "Loss"} {selGame.lou_final}-{selGame.opp_final} vs {selGame.opponent}</span>
+                {opponentRankings[selGame.opponent] && (
+                  <div className="text-[10px] text-slate-400 mt-0.5">
+                    T-Rank #{opponentRankings[selGame.opponent].rank} • {opponentRankings[selGame.opponent].rec} • AdjOE {opponentRankings[selGame.opponent].adjOE} / AdjDE {opponentRankings[selGame.opponent].adjDE}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="bg-slate-800 rounded-lg p-3 mb-3">
@@ -1214,7 +1307,11 @@ export default function App() {
                     return (
                       <React.Fragment key={gi}>
                         <tr className="border-b border-slate-700/50">
-                          <td className="p-1 font-bold text-red-400" rowSpan={2}>{g.opponent}<br/><span className="text-slate-500 font-normal">{g.date}</span></td>
+                          <td className="p-1 font-bold text-red-400" rowSpan={2}>
+                            {g.opponent}
+                            {opponentRankings[g.opponent] && <span className={`text-[9px] font-mono ml-1 ${opponentRankings[g.opponent].rank <= 50 ? "text-red-300" : "text-slate-500"}`}>#{opponentRankings[g.opponent].rank}</span>}
+                            <br/><span className="text-slate-500 font-normal">{g.date}</span>
+                          </td>
                           <td className="p-1 text-center font-bold" rowSpan={2}>
                             <span className={g.result==="W"?"text-green-400":"text-red-400"}>{g.result} {louTotal}-{oppTotal}</span>
                           </td>
@@ -1300,6 +1397,47 @@ export default function App() {
                   </>
                 );
               })()}
+            </div>
+          </div>
+
+          <div className="bg-slate-800 rounded-lg p-3 mb-3">
+            <h3 className="font-bold text-center mb-2 text-sm">📊 Opponent Quality (T-Rank)</h3>
+            <div className="text-xs text-center text-slate-400 mb-2">Louisville: #16 (AdjOE 124.6 / AdjDE 98.4 / BARTHAG .9382)</div>
+            <div className="space-y-1">
+              {allGames.map((g, i) => {
+                const r = opponentRankings[g.opponent];
+                if (!r) return null;
+                const isT50 = r.rank <= 50;
+                const margin = g.lou_final - g.opp_final;
+                return (
+                  <div key={i} className={`flex justify-between items-center p-1.5 rounded text-xs ${isT50 ? "bg-red-900/20 border border-red-800/40" : "bg-slate-700/30"}`}>
+                    <div className="flex items-center gap-2">
+                      <span className={`font-mono font-bold ${isT50 ? "text-red-400" : "text-slate-500"}`}>#{r.rank}</span>
+                      <span className="text-white font-semibold">{g.opponent}</span>
+                      <span className="text-slate-500">{r.rec}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-slate-500 font-mono text-[10px]">{r.adjOE}/{r.adjDE}</span>
+                      <span className={`font-bold font-mono ${margin > 0 ? "text-green-400" : "text-red-400"}`}>{margin > 0 ? "+" : ""}{margin}</span>
+                      <span className={g.result === "W" ? "text-green-500" : "text-red-500"}>{g.result}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-2 grid grid-cols-3 gap-2 text-center text-[10px]">
+              <div className="bg-slate-700/50 rounded p-1.5">
+                <div className="text-slate-400">Avg Opp Rank</div>
+                <div className="text-white font-bold font-mono">#{Math.round(allGames.reduce((a,g) => a + (opponentRankings[g.opponent]?.rank || 0), 0) / allGames.length)}</div>
+              </div>
+              <div className="bg-slate-700/50 rounded p-1.5">
+                <div className="text-slate-400">vs T50</div>
+                <div className="text-white font-bold">{allGames.filter(g => opponentRankings[g.opponent]?.rank <= 50).filter(g => g.result==="W").length}-{allGames.filter(g => opponentRankings[g.opponent]?.rank <= 50).filter(g => g.result==="L").length}</div>
+              </div>
+              <div className="bg-slate-700/50 rounded p-1.5">
+                <div className="text-slate-400">Avg Margin</div>
+                <div className="text-green-400 font-bold font-mono">+{(allGames.reduce((a,g) => a + g.lou_final - g.opp_final, 0) / allGames.length).toFixed(1)}</div>
+              </div>
             </div>
           </div>
         </div>
