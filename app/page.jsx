@@ -299,6 +299,18 @@ const segmentData = [
   { opponent: "Virginia", date: "Jan 18", result: "L", lou_final: 70, opp_final: 79,
     lou: { h1: [6, 2, 11, 9], h2: [10, 6, 10, 16] },
     opp: { h1: [14, 2, 10, 7], h2: [15, 8, 9, 14] } },
+  { opponent: "Pittsburgh", date: "Jan 21", result: "W", lou_final: 100, opp_final: 59,
+    lou: { h1: [13, 15, 11, 14], h2: [13, 9, 14, 11] },
+    opp: { h1: [0, 7, 4, 11], h2: [12, 9, 8, 8] } },
+  { opponent: "Virginia Tech", date: "Jan 25", result: "W", lou_final: 85, opp_final: 71,
+    lou: { h1: [4, 9, 10, 14], h2: [7, 15, 17, 9] },
+    opp: { h1: [6, 5, 6, 5], h2: [5, 15, 17, 12] } },
+  { opponent: "Duke", date: "Jan 29", result: "L", lou_final: 52, opp_final: 83,
+    lou: { h1: [7, 9, 6, 6], h2: [7, 9, 7, 1] },
+    opp: { h1: [13, 5, 6, 14], h2: [13, 13, 10, 9] } },
+  { opponent: "SMU", date: "Feb 1", result: "W", lou_final: 88, opp_final: 74,
+    lou: { h1: [4, 12, 13, 15], h2: [5, 10, 19, 10] },
+    opp: { h1: [14, 11, 10, 12], h2: [4, 7, 10, 6] } },
 ];
 
 const opponentRankings = {
@@ -319,8 +331,12 @@ const opponentRankings = {
   "California": { rank: 45, adjOE: 110.2, adjDE: 97.8, barthag: .7950, rec: "16-6" },
   "Stanford": { rank: 62, adjOE: 111.5, adjDE: 101.3, barthag: .7100, rec: "14-8" },
   "Duke": { rank: 2, adjOE: 127.5, adjDE: 91.8, barthag: .9800, rec: "20-1" },
+  "Duke2": { rank: 2, adjOE: 127.5, adjDE: 91.8, barthag: .9800, rec: "20-1" },
   "Boston College": { rank: 135, adjOE: 103.5, adjDE: 106.2, barthag: .3800, rec: "9-12" },
   "Virginia": { rank: 17, adjOE: 120.4, adjDE: 95.2, barthag: .9350, rec: "18-3" },
+  "Pittsburgh": { rank: 63, adjOE: 111.2, adjDE: 102.5, barthag: .6100, rec: "12-10" },
+  "Virginia Tech": { rank: 52, adjOE: 112.8, adjDE: 100.3, barthag: .7200, rec: "14-8" },
+  "SMU": { rank: 35, adjOE: 116.5, adjDE: 98.2, barthag: .8500, rec: "17-5" },
   "Pittsburgh": { rank: 75, adjOE: 107.0, adjDE: 102.5, barthag: .5800, rec: "9-13" },
   "Virginia Tech": { rank: 52, adjOE: 113.8, adjDE: 103.0, barthag: .7400, rec: "16-7" },
   // Upcoming
@@ -356,8 +372,8 @@ const fullSchedule = [
   { date: "Jan 13", opp: "Virginia", loc: "home", result: "L 70-79" },
   { date: "Jan 17", opp: "Pittsburgh", loc: "away", result: "W 100-59" },
   { date: "Jan 24", opp: "Virginia Tech", loc: "home", result: "W 85-71" },
-  { date: "Jan 26", opp: "Duke", loc: "away", result: null },
-  { date: "Jan 31", opp: "SMU", loc: "home", result: null },
+  { date: "Jan 26", opp: "Duke", loc: "away", result: "L 52-83" },
+  { date: "Jan 31", opp: "SMU", loc: "home", result: "W 88-74" },
   { date: "Feb 4", opp: "Notre Dame", loc: "home", result: null },
   { date: "Feb 7", opp: "Wake Forest", loc: "away", result: null },
   { date: "Feb 9", opp: "NC State", loc: "home", result: null },
@@ -377,6 +393,7 @@ const clutchDataPerGame = {
     { game: "Kentucky", close: { three:[2,2], mid:[1,1], rim:[0,0], ft:[6,6] }, blowout: { three:[2,2], mid:[0,0], rim:[1,1], ft:[2,2] } },
     { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[2,2] }, blowout: { three:[5,5], mid:[0,1], rim:[5,5], ft:[4,4] } },
     { game: "Cincinnati", close: { three:[2,5], mid:[0,1], rim:[1,2], ft:[4,4] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[8,15], mid:[0,0], rim:[1,2], ft:[6,6] } },
     { game: "Arkansas", close: { three:[1,4], mid:[0,1], rim:[0,2], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Indiana", close: { three:[1,3], mid:[0,0], rim:[1,2], ft:[4,4] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Tennessee", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[3,6], ft:[4,7] } },
@@ -386,24 +403,35 @@ const clutchDataPerGame = {
     { game: "Duke", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[4,9], mid:[1,2], rim:[3,6], ft:[4,4] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Virginia", close: { three:[3,9], mid:[0,1], rim:[2,6], ft:[1,2] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
-  ], [
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[4,8], mid:[0,0], rim:[4,4], ft:[1,1] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[5,12], mid:[0,0], rim:[1,3], ft:[1,1] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,10], mid:[0,1], rim:[3,5], ft:[0,0] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,9], mid:[0,0], rim:[3,3], ft:[3,3] } },
+  ],
+  "Mikel Brown III": [
     { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[3,3], ft:[2,2] } },
     { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,2], mid:[0,0], rim:[3,3], ft:[6,6] } },
     { game: "Kentucky", close: { three:[2,2], mid:[1,1], rim:[2,2], ft:[6,6] }, blowout: { three:[1,1], mid:[1,1], rim:[1,1], ft:[4,4] } },
     { game: "Ohio", close: { three:[1,1], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[4,4], ft:[3,3] } },
     { game: "Cincinnati", close: { three:[1,3], mid:[0,0], rim:[1,2], ft:[5,6] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,10], mid:[0,1], rim:[0,0], ft:[0,0] } },
     { game: "Arkansas", close: { three:[0,2], mid:[0,1], rim:[1,3], ft:[2,2] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Indiana", close: { three:[0,1], mid:[1,2], rim:[2,3], ft:[2,2] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Memphis", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,3], mid:[0,1], rim:[2,3], ft:[4,5] } },
     { game: "Tennessee", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,1] } },
     { game: "Stanford", close: { three:[0,1], mid:[0,0], rim:[0,1], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
-  ], //
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,7], mid:[1,1], rim:[2,3], ft:[2,3] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,6], mid:[0,1], rim:[0,2], ft:[2,2] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,7], mid:[1,2], rim:[3,4], ft:[2,3] } },
+  ],
   "Isaac McKneely": [
     { game: "SC State", close: { three:[2,2], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,3], mid:[0,0], rim:[1,1], ft:[0,0] } },
     { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,2], mid:[0,0], rim:[1,1], ft:[0,0] } },
     { game: "Kentucky", close: { three:[1,1], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,2], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Ohio", close: { three:[2,2], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,5], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Cincinnati", close: { three:[1,4], mid:[0,0], rim:[1,1], ft:[1,1] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[5,9], mid:[0,0], rim:[1,1], ft:[0,0] } },
     { game: "Arkansas", close: { three:[0,3], mid:[0,0], rim:[1,1], ft:[1,1] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Indiana", close: { three:[0,2], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Memphis", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,5], mid:[0,0], rim:[0,1], ft:[0,0] } },
@@ -414,12 +442,18 @@ const clutchDataPerGame = {
     { game: "Duke", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,4], mid:[0,0], rim:[0,0], ft:[1,2] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,7], mid:[1,2], rim:[0,0], ft:[7,7] } },
     { game: "Virginia", close: { three:[5,14], mid:[1,1], rim:[1,1], ft:[4,4] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
-  ], [
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,7], mid:[0,0], rim:[0,1], ft:[2,3] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,7], mid:[0,0], rim:[1,2], ft:[0,0] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,5], mid:[0,0], rim:[0,1], ft:[0,0] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[4,10], mid:[0,0], rim:[1,1], ft:[0,0] } },
+  ],
+  "Sananda Fru": [
     { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[1,1], ft:[2,2] } },
     { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[2,2], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[4,4], ft:[0,0] } },
     { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[2,2], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[2,2], ft:[2,2] } },
     { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[2,2], ft:[2,2] } },
     { game: "Cincinnati", close: { three:[0,0], mid:[0,0], rim:[2,3], ft:[1,2] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[4,5], ft:[0,0] } },
     { game: "Arkansas", close: { three:[0,0], mid:[0,0], rim:[1,2], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Indiana", close: { three:[0,0], mid:[0,0], rim:[2,3], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Memphis", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[5,6], ft:[2,3] } },
@@ -430,11 +464,17 @@ const clutchDataPerGame = {
     { game: "Duke", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,2] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[7,8], ft:[2,5] } },
     { game: "Virginia", close: { three:[0,0], mid:[0,0], rim:[3,5], ft:[0,2] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
-  ], [
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[6,7], ft:[0,1] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,2], mid:[0,0], rim:[5,8], ft:[2,3] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,4], ft:[2,2] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,3], ft:[1,2] } },
+  ],
+  "J'Vonne Hadley": [
     { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[4,4], ft:[2,2] } },
     { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[1,1], mid:[1,1], rim:[1,1], ft:[0,0] } },
     { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,1], rim:[3,3], ft:[0,0] } },
     { game: "Cincinnati", close: { three:[0,0], mid:[0,1], rim:[1,2], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,2], mid:[0,1], rim:[2,4], ft:[2,2] } },
     { game: "Indiana", close: { three:[0,0], mid:[0,0], rim:[2,3], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Memphis", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[3,4], ft:[2,2] } },
     { game: "Tennessee", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[4,5], ft:[1,2] } },
@@ -443,11 +483,17 @@ const clutchDataPerGame = {
     { game: "Duke", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,3], mid:[0,0], rim:[2,3], ft:[0,0] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,2], mid:[0,1], rim:[3,5], ft:[2,2] } },
     { game: "Virginia", close: { three:[0,2], mid:[0,0], rim:[4,5], ft:[3,4] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
-  ], [
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[1,1], rim:[4,5], ft:[2,2] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,2], mid:[0,0], rim:[4,6], ft:[3,3] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,3], mid:[0,0], rim:[1,4], ft:[2,4] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,3], mid:[0,0], rim:[4,5], ft:[2,4] } },
+  ],
+  "Khani Rooths": [
     { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[7,7], ft:[3,3] } },
     { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[2,2] }, blowout: { three:[1,1], mid:[1,1], rim:[3,3], ft:[3,3] } },
     { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[3,3], ft:[2,2] } },
     { game: "Cincinnati", close: { three:[0,1], mid:[0,0], rim:[0,1], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,3], mid:[0,0], rim:[2,3], ft:[1,2] } },
     { game: "Memphis", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[3,4], ft:[1,2] } },
     { game: "Tennessee", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[1,2] } },
     { game: "Montana", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,1], rim:[2,3], ft:[3,5] } },
@@ -455,11 +501,17 @@ const clutchDataPerGame = {
     { game: "Stanford", close: { three:[0,1], mid:[0,0], rim:[1,2], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Duke", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,3], mid:[0,0], rim:[2,3], ft:[2,2] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,2], mid:[0,0], rim:[1,2], ft:[1,2] } },
-  ], [
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[4,4], ft:[4,5] } },
+  ],
+  "Adrian Wooley": [
     { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[3,3] } },
     { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[0,0], mid:[1,1], rim:[1,1], ft:[3,3] } },
     { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[1,1] }, blowout: { three:[2,2], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,2], mid:[0,1], rim:[0,0], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,3], mid:[0,0], rim:[3,3], ft:[3,4] } },
     { game: "Memphis", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[2,3], ft:[2,2] } },
     { game: "Tennessee", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[4,5], ft:[5,6] } },
     { game: "Montana", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,1], ft:[2,3] } },
@@ -467,21 +519,33 @@ const clutchDataPerGame = {
     { game: "Duke", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,3], mid:[0,1], rim:[4,7], ft:[0,0] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,3], mid:[0,1], rim:[4,7], ft:[6,8] } },
     { game: "Virginia", close: { three:[0,4], mid:[0,0], rim:[1,4], ft:[3,3] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
-  ], [
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,4], mid:[0,0], rim:[1,1], ft:[4,4] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,3], mid:[0,0], rim:[2,5], ft:[1,2] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,5], mid:[0,0], rim:[0,2], ft:[0,0] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,1], rim:[1,1], ft:[0,0] } },
+  ],
+  "Kobe Rodgers": [
     { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[0,0], ft:[6,6] } },
     { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[0,0], rim:[1,1], ft:[2,2] } },
     { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[1,1], rim:[0,0], ft:[0,0] } },
     { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[1,1], rim:[2,2], ft:[0,0] } },
     { game: "Cincinnati", close: { three:[1,1], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,2], mid:[0,0], rim:[1,1], ft:[0,0] } },
     { game: "Memphis", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[0,1], ft:[0,0] } },
     { game: "California", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,1], ft:[2,2] } },
     { game: "Stanford", close: { three:[0,0], mid:[0,0], rim:[0,1], ft:[2,2] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Duke", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[0,2], ft:[0,0] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,2], mid:[0,0], rim:[1,3], ft:[0,0] } },
-  ], [
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,1], mid:[1,1], rim:[1,2], ft:[0,0] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[3,4], ft:[0,0] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[2,2], ft:[3,4] } },
+  ],
+  "Aly Khalifa": [
     { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[1,1] } },
     { game: "Kentucky", close: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] } },
     { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,2], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Memphis", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,2], ft:[0,0] } },
     { game: "Montana", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[1,1] } },
     { game: "California", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,2], ft:[0,0] } },
@@ -489,21 +553,109 @@ const clutchDataPerGame = {
     { game: "Duke", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[5,5], mid:[0,0], rim:[1,1], ft:[0,0] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,2], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Virginia", close: { three:[2,5], mid:[1,1], rim:[0,0], ft:[1,2] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
-  ], [
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[3,4], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,3], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[1,3], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,3], mid:[1,1], rim:[0,0], ft:[0,0] } },
+  ],
+  "Vangelis Zougris": [
     { game: "SC State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[2,2], ft:[1,1] } },
     { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[2,2] } },
     { game: "Ohio", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[2,2], mid:[0,0], rim:[3,3], ft:[0,0] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,0] } },
     { game: "Tennessee", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[0,1] } },
     { game: "Montana", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,2], ft:[0,1] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[1,1], ft:[1,1] } },
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[2,2], ft:[4,5] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,3], ft:[0,0] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
   ], 
   "Kasean Pryor": [
     { game: "Jackson State", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[3,3], ft:[0,1] } },
+    { game: "NJIT", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Montana", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[2,2], ft:[0,0] } },
     { game: "Duke", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,3], mid:[0,0], rim:[0,0], ft:[0,0] } },
     { game: "Boston College", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[0,0], ft:[2,2] } },
     { game: "Virginia", close: { three:[0,0], mid:[1,1], rim:[0,1], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Pittsburgh", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,1], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Virginia Tech", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "Duke2", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
+    { game: "SMU", close: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] }, blowout: { three:[0,0], mid:[0,0], rim:[0,0], ft:[0,0] } },
   ],
+};
+
+// Assist Chain Data - Season totals: who assists whom and resulting shot types
+// Format: passer -> { receiver: { three: [made, att], mid: [made, att], rim: [made, att], total: assists } }
+const assistChainData = {
+  "Ryan Conwell": {
+    "Sananda Fru": { three: [0, 0], mid: [0, 0], rim: [12, 12], total: 12 },
+    "J'Vonne Hadley": { three: [3, 3], mid: [0, 0], rim: [8, 8], total: 11 },
+    "Aly Khalifa": { three: [5, 5], mid: [1, 1], rim: [2, 2], total: 8 },
+    "Isaac McKneely": { three: [4, 4], mid: [0, 0], rim: [0, 0], total: 4 },
+    "Vangelis Zougris": { three: [0, 0], mid: [0, 0], rim: [4, 4], total: 4 },
+    "Khani Rooths": { three: [0, 0], mid: [0, 0], rim: [3, 3], total: 3 },
+    "Adrian Wooley": { three: [2, 2], mid: [0, 0], rim: [0, 0], total: 2 },
+  },
+  "Mikel Brown III": {
+    "Ryan Conwell": { three: [8, 8], mid: [0, 0], rim: [0, 0], total: 8 },
+    "Sananda Fru": { three: [0, 0], mid: [0, 0], rim: [6, 6], total: 6 },
+    "J'Vonne Hadley": { three: [2, 2], mid: [0, 0], rim: [3, 3], total: 5 },
+    "Vangelis Zougris": { three: [0, 0], mid: [0, 0], rim: [3, 3], total: 3 },
+    "Isaac McKneely": { three: [2, 2], mid: [0, 0], rim: [0, 0], total: 2 },
+    "Khani Rooths": { three: [0, 0], mid: [0, 0], rim: [2, 2], total: 2 },
+    "Adrian Wooley": { three: [1, 1], mid: [0, 0], rim: [1, 1], total: 2 },
+  },
+  "Isaac McKneely": {
+    "Sananda Fru": { three: [0, 0], mid: [0, 0], rim: [5, 5], total: 5 },
+    "J'Vonne Hadley": { three: [2, 2], mid: [0, 0], rim: [2, 2], total: 4 },
+    "Kobe Rodgers": { three: [0, 0], mid: [0, 0], rim: [2, 2], total: 2 },
+    "Aly Khalifa": { three: [1, 1], mid: [0, 0], rim: [1, 1], total: 2 },
+    "Adrian Wooley": { three: [1, 1], mid: [0, 0], rim: [0, 0], total: 1 },
+  },
+  "J'Vonne Hadley": {
+    "Isaac McKneely": { three: [5, 5], mid: [0, 0], rim: [0, 0], total: 5 },
+    "Ryan Conwell": { three: [2, 2], mid: [0, 0], rim: [0, 0], total: 2 },
+    "Aly Khalifa": { three: [2, 2], mid: [0, 0], rim: [0, 0], total: 2 },
+    "Adrian Wooley": { three: [1, 1], mid: [0, 0], rim: [1, 1], total: 2 },
+    "Mikel Brown III": { three: [1, 1], mid: [0, 0], rim: [0, 0], total: 1 },
+  },
+  "Sananda Fru": {
+    "Isaac McKneely": { three: [3, 3], mid: [0, 0], rim: [0, 0], total: 3 },
+    "Ryan Conwell": { three: [1, 1], mid: [0, 0], rim: [1, 1], total: 2 },
+    "Adrian Wooley": { three: [2, 2], mid: [0, 0], rim: [0, 0], total: 2 },
+    "Kobe Rodgers": { three: [1, 1], mid: [0, 0], rim: [0, 0], total: 1 },
+    "J'Vonne Hadley": { three: [0, 0], mid: [0, 0], rim: [1, 1], total: 1 },
+  },
+  "Adrian Wooley": {
+    "Isaac McKneely": { three: [2, 2], mid: [0, 0], rim: [0, 0], total: 2 },
+    "Sananda Fru": { three: [1, 1], mid: [0, 0], rim: [1, 1], total: 2 },
+    "Mikel Brown III": { three: [1, 1], mid: [0, 0], rim: [1, 1], total: 2 },
+    "Ryan Conwell": { three: [1, 1], mid: [0, 0], rim: [0, 0], total: 1 },
+  },
+  "Aly Khalifa": {
+    "Isaac McKneely": { three: [4, 4], mid: [0, 0], rim: [1, 1], total: 5 },
+    "Ryan Conwell": { three: [0, 0], mid: [0, 0], rim: [2, 2], total: 2 },
+    "Kobe Rodgers": { three: [0, 0], mid: [0, 0], rim: [2, 2], total: 2 },
+    "J'Vonne Hadley": { three: [0, 0], mid: [0, 0], rim: [1, 1], total: 1 },
+    "Khani Rooths": { three: [0, 0], mid: [0, 0], rim: [1, 1], total: 1 },
+  },
+  "Kobe Rodgers": {
+    "Isaac McKneely": { three: [2, 2], mid: [0, 0], rim: [0, 0], total: 2 },
+    "Ryan Conwell": { three: [1, 1], mid: [0, 0], rim: [0, 0], total: 1 },
+    "J'Vonne Hadley": { three: [1, 1], mid: [0, 0], rim: [0, 0], total: 1 },
+    "Khani Rooths": { three: [0, 0], mid: [0, 0], rim: [1, 1], total: 1 },
+    "Mikel Brown III": { three: [0, 0], mid: [0, 0], rim: [0, 0], total: 0 },
+  },
+  "Khani Rooths": {
+    "Kobe Rodgers": { three: [0, 0], mid: [0, 0], rim: [2, 2], total: 2 },
+    "Mikel Brown III": { three: [0, 0], mid: [0, 0], rim: [1, 1], total: 1 },
+    "Ryan Conwell": { three: [0, 0], mid: [0, 0], rim: [1, 1], total: 1 },
+  },
+  "Vangelis Zougris": {
+    "Ryan Conwell": { three: [1, 1], mid: [0, 0], rim: [0, 0], total: 1 },
+    "Sananda Fru": { three: [0, 0], mid: [0, 0], rim: [1, 1], total: 1 },
+  },
 };
 
 export default function App() {
@@ -518,6 +670,7 @@ export default function App() {
   const [segFilter, setSegFilter] = useState("all");
   const [clutchNote, setClutchNote] = useState(true);
   const [clutchFilter, setClutchFilter] = useState("all");
+  const [assistChainPlayer, setAssistChainPlayer] = useState(null);
   // Compare
   const [comparePlayers, setComparePlayers] = useState(["Ryan Conwell", "Isaac McKneely"]);
   // Game Prep
@@ -772,7 +925,7 @@ export default function App() {
       {view === "intel" && (
         <div>
           <div className="flex gap-1 mb-3 justify-center flex-wrap">
-            {[{k:"risk",l:"Risk Index"},{k:"clutch",l:"Clutch Splits"},{k:"compare",l:"Compare"},{k:"share",l:"Share Cards"}].map(s => (
+            {[{k:"risk",l:"Risk Index"},{k:"assists",l:"Assist Chain"},{k:"compare",l:"Compare"},{k:"share",l:"Share Cards"}].map(s => (
               <button key={s.k} onClick={() => setIntelSection(s.k)} className={`px-2 py-1 rounded text-xs ${intelSection === s.k ? "bg-blue-600" : "bg-slate-700"}`}>{s.l}</button>
             ))}
           </div>
@@ -869,7 +1022,7 @@ export default function App() {
           {intelSection === "clutch" && (() => {
             const shotTypes = ["three","mid","rim","ft"];
             const shotLabels = {"three":"3PT","mid":"MID","rim":"RIM","ft":"FT"};
-            const clutchGames = ["SC State", "Jackson State", "Kentucky", "Ohio", "Cincinnati", "Eastern Michigan", "Arkansas", "Indiana", "Memphis", "Tennessee", "Montana", "California", "Stanford", "Duke", "Boston College", "Virginia"];
+            const clutchGames = ["SC State", "Jackson State", "Kentucky", "Ohio", "Cincinnati", "Eastern Michigan", "NJIT", "Arkansas", "Indiana", "Memphis", "Tennessee", "Montana", "California", "Stanford", "Duke", "Boston College", "Virginia", "Pittsburgh", "Virginia Tech", "Duke2", "SMU"];
             const clutchT50 = clutchGames.filter(g => opponentRankings[g] && opponentRankings[g].rank <= 50);
             const clutchOutside = clutchGames.filter(g => opponentRankings[g] && opponentRankings[g].rank > 50);
             
@@ -903,6 +1056,7 @@ export default function App() {
               <div className="bg-slate-800 rounded-lg p-3 mb-3">
                 <h2 className="font-bold text-yellow-400 mb-1">🔥 Clutch Splits</h2>
                 <p className="text-gray-400 text-xs mb-1">Shot diet & FG% when game is close/trailing (lead {"<"} 10) vs comfortable (lead ≥ 10)</p>
+                <p className="text-amber-600/70 text-[10px] mb-2 italic">⚠️ Note: Small data entry errors may occur in manual shot tracking. Use for directional analysis.</p>
                 
                 <div className="flex gap-1 mb-2">
                   <button onClick={() => setClutchFilter("all")} className={`px-2 py-1 rounded text-xs ${clutchFilter==="all"?"bg-blue-600":"bg-slate-700"}`}>All ({clutchGames.length})</button>
@@ -913,7 +1067,8 @@ export default function App() {
                 <div className="flex flex-wrap gap-1 mb-2">
                   {clutchGames.map(g => {
                     const r = opponentRankings[g];
-                    const isT50 = r && r.rank <= 50;
+                    if (!r) return null;
+                    const isT50 = r.rank <= 50;
                     const dimmed = (clutchFilter === "t50" && !isT50) || (clutchFilter === "outside" && isT50);
                     return (
                       <span key={g} className={`text-[10px] px-1.5 py-0.5 rounded ${dimmed ? "bg-slate-800 text-slate-600" : isT50 ? "bg-red-900/50 text-red-300 border border-red-700" : "bg-slate-700 text-slate-400"}`}>
@@ -1030,6 +1185,96 @@ export default function App() {
             </>
             );
           })()}
+
+          {intelSection === "assists" && (
+            <div className="bg-slate-800 rounded-lg p-3 mb-3">
+              <h2 className="font-bold text-yellow-400 mb-1">🔗 Assist Chain</h2>
+              <p className="text-gray-400 text-xs mb-1">Click a player to see who they assist and where those shots come from</p>
+              <p className="text-amber-600/70 text-[10px] mb-3 italic">⚠️ Note: Small data entry errors may occur in manual tracking. Use for directional analysis.</p>
+              
+              <div className="flex flex-wrap gap-2 mb-4">
+                {Object.keys(assistChainData).map(name => (
+                  <button 
+                    key={name} 
+                    onClick={() => setAssistChainPlayer(assistChainPlayer === name ? null : name)}
+                    className={`px-3 py-1.5 rounded text-xs transition-all ${assistChainPlayer === name ? "bg-blue-600 ring-2 ring-blue-400" : "bg-slate-700 hover:bg-slate-600"}`}
+                  >
+                    {getDisplayName(name)}
+                    <span className="ml-1 text-slate-400">
+                      ({Object.values(assistChainData[name]).reduce((a, r) => a + r.total, 0)} ast)
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {assistChainPlayer && assistChainData[assistChainPlayer] && (
+                <div className="bg-slate-700/50 rounded-lg p-3">
+                  <h3 className="font-semibold text-sm mb-3 text-blue-300">
+                    {getDisplayName(assistChainPlayer)}'s Assist Breakdown
+                  </h3>
+                  <div className="space-y-2">
+                    {Object.entries(assistChainData[assistChainPlayer])
+                      .filter(([_, data]) => data.total > 0)
+                      .sort((a, b) => b[1].total - a[1].total)
+                      .map(([receiver, data]) => {
+                        const threeAst = data.three[0];
+                        const midAst = data.mid[0];
+                        const rimAst = data.rim[0];
+                        const totalPts = threeAst * 3 + midAst * 2 + rimAst * 2;
+                        return (
+                          <div key={receiver} className="bg-slate-800/50 rounded p-2">
+                            <div className="flex justify-between items-center mb-1">
+                              <span className="font-medium text-sm">{getDisplayName(receiver)}</span>
+                              <span className="text-yellow-400 font-bold">{data.total} ast</span>
+                            </div>
+                            <div className="flex gap-3 text-xs">
+                              {threeAst > 0 && (
+                                <span className="text-purple-400">
+                                  <span className="font-mono">{threeAst}</span> 3PT
+                                </span>
+                              )}
+                              {midAst > 0 && (
+                                <span className="text-blue-400">
+                                  <span className="font-mono">{midAst}</span> MID
+                                </span>
+                              )}
+                              {rimAst > 0 && (
+                                <span className="text-green-400">
+                                  <span className="font-mono">{rimAst}</span> RIM
+                                </span>
+                              )}
+                              <span className="text-slate-400 ml-auto">
+                                → <span className="text-white font-semibold">{totalPts} pts</span> created
+                              </span>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </div>
+                  <div className="mt-3 pt-2 border-t border-slate-600">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-400">Total Assists:</span>
+                      <span className="font-bold text-yellow-400">
+                        {Object.values(assistChainData[assistChainPlayer]).reduce((a, r) => a + r.total, 0)}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-400">Points Created:</span>
+                      <span className="font-bold text-green-400">
+                        {Object.values(assistChainData[assistChainPlayer]).reduce((a, r) => a + r.three[0] * 3 + r.mid[0] * 2 + r.rim[0] * 2, 0)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {!assistChainPlayer && (
+                <div className="text-center text-slate-500 py-8">
+                  👆 Select a player above to view their assist breakdown
+                </div>
+              )}
+            </div>
+          )}
 
           {intelSection === "compare" && (
             <>
@@ -1626,6 +1871,7 @@ export default function App() {
         <div>
           <div className="bg-slate-800 rounded-lg p-3 mb-3">
             <h2 className="font-bold text-yellow-400 mb-2 text-center">5-Minute Scoring Segments</h2>
+            <p className="text-amber-600/70 text-[10px] mb-2 italic text-center">⚠️ Note: Small data entry errors may occur in manual tracking. Use for directional analysis.</p>
             
             <div className="flex justify-center gap-1 mb-2">
               <button onClick={() => { setSegFilter("all"); setSegGame("all"); }} className={`px-2 py-1 rounded text-xs ${segFilter==="all"?"bg-blue-600":"bg-slate-700"}`}>All ({allGamesRaw.length})</button>
@@ -2114,4 +2360,4 @@ export default function App() {
       )}
     </div>
   );
-}›
+}
